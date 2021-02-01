@@ -5,43 +5,49 @@ module.exports = {
     client: 'mysql',
     connection: {
       host: '127.0.0.1',
-      user: 'admin',
-      password: 'admin',
+      user: 'root',
+      password: 'corea',
       database: 'osiris'
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: 'src/database/migrations',
     }
   },
 
   staging: {
     client: 'mysql',
     connection: {
-      host : '127.0.0.1',
-      user : 'admin',
-      password : 'admin',
-      database : 'osiris'
+      host: '127.0.0.1',
+      user: 'root',
+      password: 'corea',
+      database: 'osiris'
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
+      directory: 'src/database/migrations',
     }
   },
 
   production: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password'
+      host: '127.0.0.1',
+      user: 'admin',
+      password: 'admin',
+      database: 'osiris'
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
+      directory: 'src/database/migrations',
     }
   }
-
 };
