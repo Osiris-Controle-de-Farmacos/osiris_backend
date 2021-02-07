@@ -1,23 +1,14 @@
 import { Request, Response } from 'express';
 import db from '../database/';
-export default class UsersController {
-
+export default class UsersTypeController {
   async index(req: Request, res: Response) {
     try {
-      const users = await db('user')
-        .join('userType', 'user.idUserType', 'userType.id')
-        .select(
-          'user.id',
-          'user.name',
-          'user.login',
-          'user.password',
-          'userType.name as userType',
-        );
-      return res.status(200).json(users);
+      const usersType = await db('userType').select('*');
+      return res.status(200).json(usersType);
     } catch (err) {
       console.log(err);
       return res.status(400).json({
-        error: 'Houve um erro ao listar os usuários.'
+        error: 'Houve um erro ao listar os tipos de usuários.'
       });
     }
   }
@@ -25,22 +16,15 @@ export default class UsersController {
     const { id } = req.params;
 
     try {
-      const users = await db('user')
-        .join('userType', 'user.idUserType', 'userType.id')
-        .select(
-          'user.id',
-          'user.name',
-          'user.login',
-          'user.password',
-          'userType.name as userType',
-        )
-        .where('user.id', id)
+      const usersType = await db('userType')
+        .select('*')
+        .where('userType.id', id)
         ;
-      return res.status(200).json(users);
+      return res.status(200).json(usersType);
     } catch (err) {
       console.log(err);
       return res.status(400).json({
-        error: 'Houve um erro ao listar o usuário.'
+        error: 'Houve um erro ao listar o tipo de usuário.'
       });
     }
   }
@@ -51,22 +35,19 @@ export default class UsersController {
     try {
       const {
         name,
-        login,
-        password,
-        idUserType,
       } = req.body;
 
-      const user = await trx('user').insert({ name, login, password, idUserType});
+      await trx('userType').insert({ name});
 
       await trx.commit();
       return res.status(201).json({
-        msg : "Usuário cadastrado com sucesso."
+        msg : "Tipo de usuário cadastrado com sucesso."
       });
 
     } catch (err) {
       await trx.rollback();
       return res.status(400).json({
-        error: 'Erro ao cadastrar usuário.'
+        error: 'Erro ao cadastrar tipo de usuário.'
       });
     }
   }
@@ -78,32 +59,26 @@ export default class UsersController {
       const {
         id,
         name,
-        login,
-        password,
-        idUserType,
       } = req.body;
       
-      const user = {
+      const userType = {
         id: id,
         name: name,
-        login: login,
-        password: password,
-        idUserType: idUserType,
       }
 
-      await trx('user').update(user).where('id', id);
+      await trx('userType').update(userType).where('id', id);
 
       await trx.commit();
 
       return res.status(201).json({
-        msg : "Usuário atualizado com sucesso."
+        msg : "Tipo de usuário atualizado com sucesso."
       });
 
     } catch (error) {
       console.log(error);
       await trx.rollback();
       return res.status(400).json({
-        error: 'Erro ao atualizar usuário.'
+        error: 'Erro ao atualizar tipo de usuário.'
       });
     }
   }
@@ -112,16 +87,16 @@ export default class UsersController {
     const trx = await trxProvider();
     try {
       const { id } = req.params;
-      await trx('user').delete().where('id',id);
+      await trx('userType').delete().where('id',id);
       await trx.commit();
 
       return res.status(201).json({
-        msg : "Usuário atualizado com sucesso."
+        msg : "Tipo de usuário removido com sucesso."
       });
     } catch (error) {
       await trx.rollback();
       return res.status(400).json({
-        error: 'Erro ao remover usuário.'
+        error: 'Erro ao remover o tipo de usuário.'
       });
     }
   }

@@ -63,7 +63,7 @@ export default class MedicineController {
 
       await trx.commit();
       return res.status(201).json({
-        msg : "Medicação cadastrada com sucesso"
+        msg: "Medicação cadastrada com sucesso"
       });
 
     } catch (err) {
@@ -78,8 +78,8 @@ export default class MedicineController {
     const trx = await trxProvider();
 
     try {
-      const { id, name,  description, amount } = req.body;
-      
+      const { id, name, description, amount } = req.body;
+
       const medicine = {
         id: id,
         name: name,
@@ -91,34 +91,38 @@ export default class MedicineController {
       }
 
       await trx('medicine').update(medicine).where('id', id);
-      if (amount !== null){
+      if (amount !== null) {
         await trx('storage').update(storage).where('idMedicine', id);
       }
       await trx.commit();
 
-      return res.status(204).send();
+      return res.status(204).json({
+        msg: "Medicação atuializada com sucesso."
+      });
     } catch (error) {
       console.log(error);
       await trx.rollback();
       return res.status(400).json({
-        error: 'Unexpected error while updating client.'
+        error: 'Erro ao atualizar medicação.'
       });
     }
-  }  
+  }
   async delete(req: Request, res: Response) {
     const trxProvider = await db.transactionProvider();
     const trx = await trxProvider();
     try {
       const { id } = req.params;
-      await trx('storage').delete().where('idMedicine',id);
-      await trx('medicine').delete().where('id',id);
+      await trx('storage').delete().where('idMedicine', id);
+      await trx('medicine').delete().where('id', id);
       await trx.commit();
 
-      res.status(204).send();
+      res.status(204).json({ 
+        msg: "Medicação removida com sucesso." 
+      });
     } catch (error) {
       await trx.rollback();
       res.status(400).json({
-        error: 'Unexpected error while deleting client phone.'
+        error: 'Erro ao remover medicação.'
       });
     }
   }
