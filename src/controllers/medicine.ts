@@ -96,8 +96,8 @@ export default class MedicineController {
       }
       await trx.commit();
 
-      return res.status(204).json({
-        msg: "Medicação atuializada com sucesso."
+      return res.status(201).json({
+        msg: "Medicação atualizada com sucesso."
       });
     } catch (error) {
       console.log(error);
@@ -116,8 +116,8 @@ export default class MedicineController {
       await trx('medicine').delete().where('id', id);
       await trx.commit();
 
-      res.status(204).json({ 
-        msg: "Medicação removida com sucesso." 
+      res.status(201).json({
+        msg: "Medicação removida com sucesso."
       });
     } catch (error) {
       await trx.rollback();

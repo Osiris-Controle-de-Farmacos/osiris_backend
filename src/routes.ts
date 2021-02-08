@@ -46,4 +46,9 @@ routes.delete('/userType/:id', userTypeControllers.delete);
 
 //Prescription
 routes.get('/prescriptions', prescriptionControllers.index);
+routes.get('/prescription/:id', prescriptionControllers.show);
+routes.post('/prescription', prescriptionControllers.create);
+routes.put('/prescription', prescriptionControllers.update);
+routes.delete('/prescription/:id', prescriptionControllers.delete);
+
 export default routes;
