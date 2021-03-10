@@ -115,6 +115,7 @@ export default class MedicineController {
 				msg: "Medicação removida com sucesso.",
 			});
 		} catch (error) {
+			console.log(error);
 			await trx.rollback();
 			res.status(400).json({
 				error: "Erro ao remover medicação.",
